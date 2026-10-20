@@ -1,5 +1,5 @@
 
-name: Check Nagham Project
+name: Check Nagham Build Setup
 
 on:
   workflow_dispatch:
@@ -8,12 +8,19 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Check ZIP file
+      - name: Inspect project scripts
         run: |
           set -e
-          ls -lh
-          test -f nagham-music-app-development.zip
-          unzip -l nagham-music-app-development.zip | head -60
+          mkdir app-source
+          unzip -q nagham-music-app-development.zip -d app-source
+          cd app-source
+          echo "===== PACKAGE JSON ====="
+          cat package.json
+          echo "===== APK BUILD SCRIPT ====="
+          sed -n '1,180p' scripts/build-apk.mjs
+          echo "===== ANDROID FILES ====="
+          ls -la android
+          echo "===== GRADLE WRAPPER ====="
+          find android -maxdepth 3 -type f -name 'gradlew*'
