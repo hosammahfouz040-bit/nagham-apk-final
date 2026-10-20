@@ -1,0 +1,40 @@
+
+name: Build Nagham Android APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get project files
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Extract project
+        run: |
+          set -e
+          mkdir app-source
+          unzip -q nagham-music-app-development.zip -d app-source
+          find app-source -name package.json -print
+
+      - name: Stop if native Android project is missing Gradle files
+        run: |
+          echo "This project needs a valid Android Gradle project."
+          find app-source -path '*/android/gradlew' -o -path '*/android/build.gradle' -o -path '*/android/build.gradle.kts'
+          echo "The project will not produce an APK until its Android project is configured."
