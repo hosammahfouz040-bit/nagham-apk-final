@@ -20,6 +20,8 @@ jobs:
           cat package.json
           echo "===== APK BUILD SCRIPT ====="
           sed -n '1,180p' scripts/build-apk.mjs
+                    echo "===== PYTHON APK BUILDER ====="
+          sed -n '1,220p' scripts/build_android_apk.py
           echo "===== ANDROID FILES ====="
           ls -la android
           echo "===== GRADLE WRAPPER ====="
