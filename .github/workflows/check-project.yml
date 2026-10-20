@@ -1,0 +1,19 @@
+
+name: Check Nagham Project
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check ZIP file
+        run: |
+          set -e
+          ls -lh
+          test -f nagham-music-app-development.zip
+          unzip -l nagham-music-app-development.zip | head -60
